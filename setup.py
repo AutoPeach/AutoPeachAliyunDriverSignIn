@@ -8,4 +8,6 @@ setup(
     packages=['AutoPeachAliyunDriverSignIn'],
     zip_safe=True,
     install_requires=['AutoPeach', 'requests'],
+    keywords=['AutoPeachPlugins'],
+    AutoPeachMetaInfo=['MetaInfo'],
 )
