@@ -4,6 +4,7 @@ from AutoPeachApi import Storage
 
 URL_ACCESS_TOKEN = 'https://auth.aliyundrive.com/v2/account/token'
 URL_SIGNIN_DAILY = 'https://member.aliyundrive.com/v1/activity/sign_in_list'
+URL_REWARD_DAILY = 'https://member.aliyundrive.com/v1/activity/sign_in_reward?_rx-s=mobile'
 
 
 def update_access_token(account):
