@@ -50,6 +50,23 @@ def sing_in(account):
             msg += f' 本次签到获得：{reward_name}{reward_description}'
     return True, msg
 
+def reward(account, signInCount):
+    msg = account.get('nick_name', '')
+    if msg: msg += ' '
+    access_token = account.get('access_token')
+    headers = {'Authorization': 'Bearer ' + access_token, 'Content-Type': 'application/json'}
+    payload = dict(signInDay=signInCount)
+    response = requests.post(URL_REWARD_DAILY, json=payload, headers=headers)
+    rsp_json = response.json()
+    if not rsp_json.get('success', False):
+        msg += '领取奖励失败'
+        return False, msg
+    msg += '领取奖励成功'
+    result = rsp_json.get('result', {})
+    reward_name = result.get('name', '')
+    reward_description = result.get('description', '')
+    if reward_name or reward_description:
+        msg += f' 本次签到获得：{reward_name}{reward_description}'
 
 def main():
     for account in Storage('aliyun_driver').get_all():
