@@ -41,7 +41,10 @@ def sing_in(account):
     signInCount = result.get('signInCount', 0)
     signInLogs = result.get('signInLogs', [{}])
     msg += f'，本月累计签到 {signInCount} 天'
-    reward(account, signInCount)
+    rewards = filter(lambda r: r.get('status') == 'normal' and not r.get('isReward'), signInLogs)
+    for reward in rewards:
+        signInDay = reward.get('day')
+        reward(account, signInCount)
     return True, msg
 
 def reward(account, signInCount):
