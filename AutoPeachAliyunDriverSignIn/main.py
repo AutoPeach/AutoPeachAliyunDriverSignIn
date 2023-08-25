@@ -41,13 +41,7 @@ def sing_in(account):
     signInCount = result.get('signInCount', 0)
     signInLogs = result.get('signInLogs', [{}])
     msg += f'，本月累计签到 {signInCount} 天'
-    currentSignInfo = signInLogs[signInCount - 1]
-    reward = currentSignInfo.get('reward', {})
-    if reward:
-        reward_name = reward.get('name', '')
-        reward_description = reward.get('description', '')
-        if reward_name or reward_description:
-            msg += f' 本次签到获得：{reward_name}{reward_description}'
+    reward(account, signInCount)
     return True, msg
 
 def reward(account, signInCount):
@@ -59,14 +53,14 @@ def reward(account, signInCount):
     response = requests.post(URL_REWARD_DAILY, json=payload, headers=headers)
     rsp_json = response.json()
     if not rsp_json.get('success', False):
-        msg += '领取奖励失败'
+        msg += f'领取第{signInCount}天奖励失败'
         return False, msg
-    msg += '领取奖励成功'
+    msg += f'领取第{signInCount}天奖励成功'
     result = rsp_json.get('result', {})
     reward_name = result.get('name', '')
     reward_description = result.get('description', '')
     if reward_name or reward_description:
-        msg += f' 本次签到获得：{reward_name}{reward_description}'
+        msg += f' 本次领取获得：{reward_name}{reward_description}'
 
 def main():
     for account in Storage('aliyun_driver').get_all():
